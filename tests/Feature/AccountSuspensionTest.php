@@ -52,7 +52,7 @@ class AccountSuspensionTest extends TestCase
         $this->actingAs($admin)->patch(route('users.suspend', $user));
 
         $this->assertSame(0, DB::table('sessions')->where('user_id', $user->id)->count());
-        $this->assertSame(1, DB::table('sessions')->where('user_id', $admin->id)->count());
+        $this->assertTrue(DB::table('sessions')->where('id', 'session-c')->exists(), 'Other users keep their sessions.');
         $this->assertNull($user->fresh()->remember_token);
     }
 
